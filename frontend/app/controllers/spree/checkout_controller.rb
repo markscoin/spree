@@ -18,21 +18,11 @@ module Spree
     before_filter :associate_user
     before_filter :check_authorization
     before_filter :apply_coupon_code
-    before_filter :check_registration
-
     before_filter :setup_for_current_state
 
     helper 'spree/orders'
 
     rescue_from Spree::Core::GatewayError, :with => :rescue_from_spree_gateway_error
-    
-    
-    def check_registration
-        return if spree_current_user or current_order.email
-        store_location
-        redirect_to spree_login_path
-        flash[:alert] = "Must Be Logged In To Checkout"
-    end
 
     # Updates the order and advances to the next state (when possible.)
     def update
